@@ -1,0 +1,1347 @@
+{
+  "name": "Dealer project",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "\"APNA GHAR\" Scheme From Maryam Nawaz Sharif",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Name",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Phone Number",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Email",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "Plot",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "3 marla"
+                  },
+                  {
+                    "option": "5 marla"
+                  },
+                  {
+                    "option": "6 marla"
+                  },
+                  {
+                    "option": "10 marla"
+                  },
+                  {
+                    "option": "Not Sure"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "family members"
+            },
+            {
+              "fieldLabel": "family income"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "d8188164-2b31-4210-9598-e5420c7f5567",
+      "name": "On form submission",
+      "webhookId": "5c4d5c99-847d-45c7-862e-69669d4667f6"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json['Phone Number'] }}\n\n{{ $json.Email }}\n\nYour task is to check whether both email and phone number are in correct format or not. if both are correct give \"YES\", otherwise \"No\"",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "c4f64785-cea6-4059-a744-faa0bc59fd93",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        144,
+        224
+      ],
+      "id": "390c5365-bf06-4ce7-a986-0107771133ac",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "FibEkzq89lAhTxkX",
+          "name": "Google Gemini(PaLM) Api account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "310f1143-debb-4b92-be11-69b39224337d",
+              "leftValue": "={{ $json.output }}",
+              "rightValue": "={{ $json.output }}",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        592,
+        0
+      ],
+      "id": "e5f0a30f-0254-40fe-b861-d10a5cafc85a",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.1,
+      "position": [
+        800,
+        -96
+      ],
+      "id": "c58ce69d-737f-4dcf-80b8-fe4a3135d29b",
+      "name": "Merge"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.Plot }}",
+                    "rightValue": "3 marla",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "4e6fd2e8-9209-48c9-90e1-b2477647ce41"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "d693e8b9-0396-4d42-8fa3-6239571d56c0",
+                    "leftValue": "={{ $json.Plot }}",
+                    "rightValue": "5 marla",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "e90b11a6-9eb5-4429-ab63-ca8637693520",
+                    "leftValue": "={{ $json.Plot }}",
+                    "rightValue": "6 marla",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "9fc47ffe-e107-4322-be77-df763647d7b1",
+                    "leftValue": "={{ $json.Plot }}",
+                    "rightValue": "10 marla",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 2
+                },
+                "conditions": [
+                  {
+                    "id": "534a0cf0-b80a-4218-9ce9-e4c76694ceb9",
+                    "leftValue": "={{ $json.Plot }}",
+                    "rightValue": "Not Sure",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals",
+                      "name": "filter.operator.equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.2,
+      "position": [
+        1024,
+        -96
+      ],
+      "id": "bf3cb829-34fe-4cfa-8c05-2db1b0b6c057",
+      "name": "Switch"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appJTT5T6xGyAazSW",
+          "mode": "list",
+          "cachedResultName": "Untitled Base",
+          "cachedResultUrl": "https://airtable.com/appJTT5T6xGyAazSW"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblMFf8ePpm1WTSYA",
+          "mode": "list",
+          "cachedResultName": "3 marla",
+          "cachedResultUrl": "https://airtable.com/appJTT5T6xGyAazSW/tblMFf8ePpm1WTSYA"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.Name }}",
+            "Phone Number": "={{ $json['Phone Number'] }}",
+            "Email": "={{ $json.Email }}",
+            "Plot": "={{ $json.Plot }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Phone Number",
+              "displayName": "Phone Number",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Plot",
+              "displayName": "Plot",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1248,
+        -320
+      ],
+      "id": "14aca445-6713-474d-ac6a-da123e5d36b3",
+      "name": "Airtable",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "LfubvGB5AOYh0OwC",
+          "name": "Airtable Personal Access Token account 13"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appJTT5T6xGyAazSW",
+          "mode": "list",
+          "cachedResultName": "Untitled Base",
+          "cachedResultUrl": "https://airtable.com/appJTT5T6xGyAazSW"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tbl1vRaDgjETg0mjt",
+          "mode": "list",
+          "cachedResultName": "5 marla",
+          "cachedResultUrl": "https://airtable.com/appJTT5T6xGyAazSW/tbl1vRaDgjETg0mjt"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.Name }}",
+            "Phone Number": "={{ $json['Phone Number'] }}",
+            "Email": "={{ $json.Email }}",
+            "Plot": "={{ $json.Plot }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Phone Number",
+              "displayName": "Phone Number",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Plot",
+              "displayName": "Plot",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1408,
+        -176
+      ],
+      "id": "23a68a08-4f61-41c9-a5bd-56c9608ee32d",
+      "name": "Airtable1",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "LfubvGB5AOYh0OwC",
+          "name": "Airtable Personal Access Token account 13"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appJTT5T6xGyAazSW",
+          "mode": "list",
+          "cachedResultName": "Untitled Base",
+          "cachedResultUrl": "https://airtable.com/appJTT5T6xGyAazSW"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblhYRX58yFXHizhc",
+          "mode": "list",
+          "cachedResultName": "6 marla",
+          "cachedResultUrl": "https://airtable.com/appJTT5T6xGyAazSW/tblhYRX58yFXHizhc"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.Name }}",
+            "Phone Number": "={{ $json['Phone Number'] }}",
+            "Email": "={{ $json.Email }}",
+            "Plot": "={{ $json.Plot }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Phone Number",
+              "displayName": "Phone Number",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Plot",
+              "displayName": "Plot",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1552,
+        -64
+      ],
+      "id": "f1a48da4-7700-4058-8297-5608c92990db",
+      "name": "Airtable2",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "LfubvGB5AOYh0OwC",
+          "name": "Airtable Personal Access Token account 13"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appJTT5T6xGyAazSW",
+          "mode": "list",
+          "cachedResultName": "Untitled Base",
+          "cachedResultUrl": "https://airtable.com/appJTT5T6xGyAazSW"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblMyESNdA573Socb",
+          "mode": "list",
+          "cachedResultName": "10 marla",
+          "cachedResultUrl": "https://airtable.com/appJTT5T6xGyAazSW/tblMyESNdA573Socb"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.Name }}",
+            "Phone Number": "={{ $json['Phone Number'] }}",
+            "Email": "={{ $json.Email }}",
+            "Plot": "={{ $json.Plot }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Phone Number",
+              "displayName": "Phone Number",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Plot",
+              "displayName": "Plot",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1424,
+        112
+      ],
+      "id": "72eacff2-92e3-4743-95c3-a50eac7d8e38",
+      "name": "Airtable3",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "LfubvGB5AOYh0OwC",
+          "name": "Airtable Personal Access Token account 13"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "374d52a8-e849-4341-ad3e-956559822f7f",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -64,
+        592
+      ],
+      "id": "200f3f93-7412-41eb-8ae0-49494944c625",
+      "name": "Webhook",
+      "webhookId": "374d52a8-e849-4341-ad3e-956559822f7f"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "= give output same as  {{ $json.body.question }} and it should be one of 3 marla, 5 marla,6 marla or 10 marla and do not add any extra thing in output                  also keep in mind that in http request should return same output ",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        160,
+        528
+      ],
+      "id": "943bddcd-fbb5-4fb2-805b-f914df002bb7",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        32,
+        784
+      ],
+      "id": "a2f3df57-ed7e-4e3c-975a-21d147aeb89c",
+      "name": "Google Gemini Chat Model1",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "FibEkzq89lAhTxkX",
+          "name": "Google Gemini(PaLM) Api account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "34.59.11.47"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        272,
+        800
+      ],
+      "id": "019ec7a0-6ab0-40a2-9b52-ee5d703feca5",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolName": "plotssuggestionknowledgebase",
+        "toolDescription": "retrive data when user asks for relevent data about plot and gives answer in the form of 3 marla,5 marla, 6 marla,10 marla.",
+        "pineconeIndex": {
+          "__rl": true,
+          "value": "plotsuggestion",
+          "mode": "list",
+          "cachedResultName": "plotsuggestion"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStorePinecone",
+      "typeVersion": 1.1,
+      "position": [
+        480,
+        880
+      ],
+      "id": "17b320a1-c916-416f-b557-a670350362c1",
+      "name": "Pinecone Vector Store",
+      "credentials": {
+        "pineconeApi": {
+          "id": "zq0bEWQd9OnswmRs",
+          "name": "PineconeApi account 3"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.embeddingsGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        592,
+        1104
+      ],
+      "id": "22662710-16a7-40dd-9707-86e3a55f8241",
+      "name": "Embeddings Google Gemini",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "FibEkzq89lAhTxkX",
+          "name": "Google Gemini(PaLM) Api account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.3,
+      "position": [
+        528,
+        592
+      ],
+      "id": "2735278c-a733-4e26-973a-979f25944502",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://n8n.srv829343.hstgr.cloud/webhook/374d52a8-e849-4341-ad3e-956559822f7f",
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "text",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1280,
+        288
+      ],
+      "id": "62babe8b-57fa-45cb-9827-be8f072a40e7",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=choose one option from   {{ $json.output }} and dont add any extra thing in output .output should be one of 3 marla,5 marla,6 marla, 10 marla.   Family members are:    {{ $('On form submission').item.json['family members'] }}     Family income is : {{ $('On form submission').item.json['family income'] }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        1504,
+        288
+      ],
+      "id": "11d08e7c-e53d-4da8-8a66-21b63aac1433",
+      "name": "AI Agent2"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1552,
+        512
+      ],
+      "id": "24732546-29e8-46a4-93c7-e3c740631601",
+      "name": "Google Gemini Chat Model2",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "DvwKKK150Ca6Ngqo",
+          "name": "GoogleGemini(PaLM)ApiAccount_Abdullah"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appJTT5T6xGyAazSW",
+          "mode": "list",
+          "cachedResultName": "Untitled Base",
+          "cachedResultUrl": "https://airtable.com/appJTT5T6xGyAazSW"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblUBmXg6iDAX6qCO",
+          "mode": "list",
+          "cachedResultName": "Not sure",
+          "cachedResultUrl": "https://airtable.com/appJTT5T6xGyAazSW/tblUBmXg6iDAX6qCO"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $('On form submission').item.json.Name }}",
+            "Phone Number": "={{ $('On form submission').item.json['Phone Number'] }}",
+            "Email": "={{ $('On form submission').item.json.Email }}",
+            "Plot": "={{ $json.output }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Phone Number",
+              "displayName": "Phone Number",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Plot",
+              "displayName": "Plot",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1872,
+        288
+      ],
+      "id": "13b0dddf-dfc9-41e9-8195-0f8ada675bef",
+      "name": "Airtable4",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "LfubvGB5AOYh0OwC",
+          "name": "Airtable Personal Access Token account 13"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Name:{{ $json.fields.Name }}\n\nThe user have selected these plot: {{ $json.fields.Plot }}\n\nYour task is to:\n- Schedule a meeting with ASADULLAH JAVED, who is appointed as Manager of this project by Maryam Nawaz Sharif.  \n- Meetings can only be scheduled Monday to Friday.  \n- Working hours: 10 AM to 4 PM.  \n- Break time: 1 PM to 2 PM (never schedule in break time).  \n- Meetings should never overlap.  \n- Assign a proper date and time for each meeting.  \n    Generate a proper paragraph of it , as i want to include it in gmail. keep in mind that this mail is not for manager Asadullah, this is for user who want to buy plot. only give body in output and dont use examples in body. give a proper and simple meaasage to user.also not include Subject.Give the date within one month from the current date August 20th,2025\n ",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        2144,
+        -48
+      ],
+      "id": "1c9bb0e6-d0af-4aa9-a517-c9e10fd8a337",
+      "name": "AI Agent3"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2192,
+        192
+      ],
+      "id": "bf749b96-d268-4313-9147-1cef9afc434a",
+      "name": "Google Gemini Chat Model3",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "DvwKKK150Ca6Ngqo",
+          "name": "GoogleGemini(PaLM)ApiAccount_Abdullah"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('On form submission').item.json.Email }}",
+        "subject": "\"APNA GHAR\" Scheme by CM Maryam Nawaz Sharif",
+        "emailType": "text",
+        "message": "={{ $json.output }}\nRegards,\nHafiz M.Talal,Assistant of Asadullah Javed",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2512,
+        -48
+      ],
+      "id": "02cd1f98-62fb-43d6-af8c-1bd324b5fee7",
+      "name": "Gmail",
+      "webhookId": "17546af6-f81e-4a0d-88cf-de5c73cf6c54",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2x6gwC76Cv85WSTF",
+          "name": "Gmail account_Asadullah"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Name:{{ $json.fields.Name }}\n\nThe user have selected these plot: {{ $json.fields.Plot }}\n\nYour task is to:\n- Schedule a meeting with ASADULLAH JAVED, who is appointed as Manager of this project by Maryam Nawaz Sharif.  \n- Meetings can only be scheduled Monday to Friday.  \n- Working hours: 10 AM to 4 PM.  \n- Break time: 1 PM to 2 PM (never schedule in break time).  \n- Meetings should never overlap.  \n- Assign a proper date and time for each meeting.  \nkeep in mind that user was not sure bout plot, on the basis of family members and family income , our AI assistant will specify a plot, but for more disscussions on plot, meeting is scheduling\n    Generate a proper paragraph of it , as i want to include it in gmail. keep in mind that this mail is not for manager Asadullah, this is for user who want to buy plot. only give body in output and dont use examples in body. give a proper and simple meaasage to user.also not include Subject.Give the date within one month from the current date August 20th,2025",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        2384,
+        288
+      ],
+      "id": "fd4fc825-a548-45bf-b961-5b76ede3f51d",
+      "name": "AI Agent4"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        2432,
+        512
+      ],
+      "id": "de1cdb9a-2ae1-47b3-b1eb-f05673489942",
+      "name": "Google Gemini Chat Model4",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "FibEkzq89lAhTxkX",
+          "name": "Google Gemini(PaLM) Api account 4"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('On form submission').item.json.Email }}",
+        "subject": "\"APNA GHAR\" Scheme by Maryam Nawaz Sharif",
+        "emailType": "text",
+        "message": "={{ $json.output }}\n\nRegards,\nHafiz M. Talal,Assistant of Asadullah Javed",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        2752,
+        288
+      ],
+      "id": "67c46ca4-a3ec-425a-bc57-70f7e78ca9e1",
+      "name": "Gmail1",
+      "webhookId": "e1c31c75-fe18-4cd5-b010-19452850bc25",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "2x6gwC76Cv85WSTF",
+          "name": "Gmail account_Asadullah"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Merge",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge": {
+      "main": [
+        [
+          {
+            "node": "Switch",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Switch": {
+      "main": [
+        [
+          {
+            "node": "Airtable",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Airtable1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Airtable2",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Airtable3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pinecone Vector Store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Google Gemini": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Pinecone Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent2": {
+      "main": [
+        [
+          {
+            "node": "Airtable4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable": {
+      "main": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable1": {
+      "main": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable2": {
+      "main": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable3": {
+      "main": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Airtable4": {
+      "main": [
+        [
+          {
+            "node": "AI Agent4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent3": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent4",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent4": {
+      "main": [
+        [
+          {
+            "node": "Gmail1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "336df5da-b5c5-45b8-8b2a-e44ee3210396",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "b3b467644dfa8e0c6797928cc6d8bf68d9415ef612f9ba2a0d45772e9aff0f75"
+  },
+  "id": "w2ipZ6gSHhbtjQ3C",
+  "tags": []
+}
